@@ -1,2 +1,3 @@
 file/**
 !file/index.php
+config.php
