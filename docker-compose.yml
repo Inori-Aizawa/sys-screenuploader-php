@@ -7,13 +7,16 @@ services:
       image: sys-screenshot-uploader
       restart: always
       volumes:
-        - /volume1/media/switch/pics:/var/www/html/pics/
+        - ${path}:/var/www/html/pics/
+      ports:
+        # remove the # to open the port 80
+        # - "80:80" 
       build:
         context: .
         dockerfile: Dockerfile
         target: base
-
+# remove all under here if you dont use a network
 networks:
   default:
     external:
-      name: proxy-manager_default
+      name: proxy-manager_default # change this to your desired network

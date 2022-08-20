@@ -2,3 +2,4 @@ pics/**
 !pics/index.php
 log.log
 game_id.json
+.env
