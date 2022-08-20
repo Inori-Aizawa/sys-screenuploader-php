@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  php:
+      hostname: switchscreenshots
+      container_name: sys-screenshot-uploader
+      image: sys-screenshot-uploader
+      restart: always
+      volumes:
+        - /volume1/media/switch/pics:/var/www/html/pics/
+      build:
+        context: .
+        dockerfile: Dockerfile
+        target: base
+
+networks:
+  default:
+    external:
+      name: proxy-manager_default
