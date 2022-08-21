@@ -8,8 +8,8 @@ services:
       restart: always
       volumes:
         - ${path}:/var/www/html/pics/
-      ports:
-        # remove the # to open the port 80
+      # remove the # to open the port 80
+      # ports:
         # - "80:80" 
       build:
         context: .
