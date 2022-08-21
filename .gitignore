@@ -3,4 +3,4 @@ pics/**
 log.log
 game_id.json
 .env
-
+config.php

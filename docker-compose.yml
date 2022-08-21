@@ -8,8 +8,10 @@ services:
       restart: always
       volumes:
         - ${path}:/var/www/html/pics/
-      ports:
+        - ${path}/config.php:/var/www/html/config.php
+        - ${path}/log.log:/var/www/html/log.log
         # remove the # to open the port 80
+     # ports:
         # - "80:80" 
       build:
         context: .
