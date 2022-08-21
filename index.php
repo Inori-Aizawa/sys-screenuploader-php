@@ -12,10 +12,11 @@ if (in_array($ext, ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'mp4', 'avi', 'mpg', 'mp
     if ($mode == 'local') {
         saveToDisk($path);
     } elseif ($mode == 'telegram') {
-        sendToTelegram($path.$_REQUEST['filename']);
+        sendToTelegram($path);
     } elseif ($mode == 'both') {
-        sendToTelegram($path.$_REQUEST['filename']);
         saveToDisk($path);
+        sendToTelegram($path);
+
     }
 } else {
     echo 'not allowed';
@@ -41,21 +42,24 @@ function getTitleFromName($filename)
     }
 }
 
-function sendToTelegram($path)
+function sendToTelegram()
 {
+    $path = "tmp/";
     LogToFile('Sending to telegram');
-    file_put_contents($path, file_get_contents('php://input'));
+    if(!file_put_contents($path.$_REQUEST['filename'], file_get_contents('php://input'))){
+        mkdir($path);
+    }
     global $chat_id, $bot_id;
-    if (file_exists($path)) {
+    if (file_exists($path.$_REQUEST['filename'])) {
         $bot_url = "https://api.telegram.org/bot". $bot_id."/";
-        $mime = mime_content_type($path);
+        $mime = mime_content_type($path.$_REQUEST['filename']);
         if (strpos($mime, 'video') !== false) {
             $url = $bot_url.'sendVideo?parse_mode=markdown&chat_id='.$chat_id;
             $post_fields = [
                 'chat_id' => $chat_id,
                 'supports_streaming' => true,
                 'parse_mode' => 'markdown',
-                'video' => new CURLFile(realpath($path)),
+                'video' => new CURLFile(realpath($path.$_REQUEST['filename'])),
             ];
         } else {
             $url = $bot_url.'sendPhoto?chat_id='.$chat_id;
@@ -64,7 +68,7 @@ function sendToTelegram($path)
             $post_fields = [
                 'chat_id' => $chat_id,
                 'parse_mode' => 'markdown',
-                'photo' => new CURLFile(realpath($path)),
+                'photo' => new CURLFile(realpath($path.$_REQUEST['filename'])),
             ];
         }
         $ch = curl_init();
@@ -80,9 +84,9 @@ function sendToTelegram($path)
         curl_close($ch);
         echo $output;
     } else {
-        LogToFile("FILE NOT EXISTS $path\n");
+        LogToFile("FILE NOT EXISTS". $path.$_REQUEST['filename'] . "\n");
     }
-    unlink($path);
+    unlink($path.$_REQUEST['filename']);
 
     return $output;
 }
