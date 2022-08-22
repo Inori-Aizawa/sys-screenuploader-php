@@ -7,9 +7,9 @@ services:
       image: sys-screenshot-uploader
       restart: always
       volumes:
-        - ${path}/pics:/var/www/html/pics/
-        - ${path}/config/config.php:/var/www/html/config.php
-        - ${path}/config/log.log:/var/www/html/log.log
+        - ${pictures_path}/pics:/var/www/html/pics/
+        - ${config_path}/config/config.php:/var/www/html/config.php
+        - ${config_path}/config/log.log:/var/www/html/log.log
       # remove the # to open the port 80
       # ports:
         # - "80:80" 

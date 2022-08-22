@@ -68,6 +68,7 @@ function sendToTelegram()
             $post_fields = [
                 'chat_id' => $chat_id,
                 'parse_mode' => 'markdown',
+                'caption' => getTitleFromName($_REQUEST['filename']),
                 'photo' => new CURLFile(realpath($path.$_REQUEST['filename'])),
             ];
         }
